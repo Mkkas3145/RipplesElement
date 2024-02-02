@@ -2,16 +2,16 @@
 
 class RipplesEvent {
     static option = {
-        "spreadTime": 0.15,                         // 리플 효과가 퍼지는 시간
-        "visibleTime": 0.05,                        // 리플 효과가 나타나는 시간
-        "hiddenTime": 0.2,                          // 리플 효과가 끝난 뒤, 사라지는 시간
-        "touchWaitTime": 0.1,                       // 스크롤 동작을 구분하기 위해 기다리는 시간
+        "spreadDuration": 0.15,                     // 리플 효과가 퍼지는 시간
+        "fadeInDuration": 0.05,                     // 리플 효과가 나타나는 시간
+        "fadeOutDuration": 0.2,                     // 리플 효과가 끝난 뒤, 사라지는 시간
+        "touchDelay": 0.1,                          // 스크롤 동작을 구분하기 위해 기다리는 시간
         "color": "#000000",                         // 리플 효과 색상
         "opacity": 0.5,                             // 리플 효과 불투명도
         "blur": 10,                                 // 리플 효과 흐릿함 정도 (px)
-        "startScale": 0.2,                          // 시작 시, 진행 상황
-        "endScale": 1,                              // 끝날 시, 진행 상황
-        "cubicBezier": [0.215, 0.61, 0.355, 1.0]    // 3차원 베지어 곡선
+        "lowerScale": 0.2,                          // 시작 시, 진행 상황
+        "upperScale": 1,                            // 끝날 시, 진행 상황
+        "curve": [0.215, 0.61, 0.355, 1.0]          // 3차원 베지어 곡선
     }
 
     static start(element, x, y) {
@@ -45,16 +45,16 @@ class RipplesEvent {
         ripples.style.justifyContent = "center";
         ripples.style.alignItems = "center";
         ripples.style.overflow = "hidden";
-        ripples.style.transition = ("opacity " + this.option["visibleTime"] + "s");
+        ripples.style.transition = ("opacity " + this.option["fadeInDuration"] + "s");
         ripples.style.opacity = 0;
         let effect = document.createElement("div");
         effect.style.backgroundColor = this.option["color"];
         effect.style.borderRadius = "50%";
         effect.style.opacity = this.option["opacity"];
         effect.style.filter = ("blur(" + this.option["blur"] + "px)");
-        effect.style.transform = ("scale(" + this.option["startScale"] + ")");
-        effect.style.transition = ("transform " + this.option["spreadTime"] + "s, opacity " + this.option["hiddenTime"] + "s");
-        effect.style.transitionTimingFunction = ("cubic-bezier(" + this.option["cubicBezier"].join(", ") + ")");
+        effect.style.transform = ("scale(" + this.option["lowerScale"] + ")");
+        effect.style.transition = ("transform " + this.option["spreadDuration"] + "s, opacity " + this.option["fadeOutDuration"] + "s");
+        effect.style.transitionTimingFunction = ("cubic-bezier(" + this.option["curve"].join(", ") + ")");
         
         // 최대 사이즈 구하기 (거리 차이를 이용해서)
         let centerToWidth = Math.abs(rect.width * percentX);
@@ -75,7 +75,7 @@ class RipplesEvent {
         effect.setAttribute("start_time", new Date().getTime());
         window.requestAnimationFrame(() => {
             ripples.style.opacity = 1;
-            effect.style.transform = ("scale(" + this.option["endScale"] + ")");
+            effect.style.transform = ("scale(" + this.option["upperScale"] + ")");
         });
     }
 
@@ -91,14 +91,14 @@ class RipplesEvent {
 
                 let startTime = Number.parseInt(effect.getAttribute("start_time"));
                 let deltaTime = (endTime - startTime) / 1000;
-                let delay = (this.option["spreadTime"] - deltaTime);
+                let delay = (this.option["spreadDuration"] - deltaTime);
                 (delay < 0) ? delay = 0 : null;
 
                 setTimeout(() => {
                     effect.style.opacity = 0;
                     setTimeout(() => {
                         wrapper.remove();
-                    }, this.option["hiddenTime"] * 1000);
+                    }, this.option["fadeOutDuration"] * 1000);
                 }, delay * 1000);
             }
         }
@@ -150,7 +150,7 @@ class RipplesElement extends HTMLElement {
         this.addEventListener("touchstart", (event) => {
             isTouch = true;
             touchStartEvent = event;
-            touchStart(event, RipplesEvent.option["touchWaitTime"]);
+            touchStart(event, RipplesEvent.option["touchDelay"]);
         }, {passive: true});
         this.addEventListener("touchend", () => {
             RipplesEvent.end(child);
