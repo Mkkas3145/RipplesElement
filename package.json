@@ -1,0 +1,12 @@
+{
+  "name": "ripples-element",
+  "version": "1.0.0",
+  "description": "",
+  "main": "ripples-min.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": ["front-end", "touch-ripples"],
+  "author": "Mkkas3145",
+  "license": "ISC"
+}
