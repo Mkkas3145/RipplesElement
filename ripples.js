@@ -130,38 +130,38 @@ class RipplesElement extends HTMLElement {
         }
         let child = this.children[0];
         // 이벤트 등록 - 클릭
-        this.addEventListener("mousedown", (event) => {
+        child.addEventListener("mousedown", (event) => {
             if (!isTouch) {
                 RipplesEvent.start(child, event.clientX, event.clientY);
             } else {
                 isTouch = false;
             }
         });
-        this.addEventListener("mouseup", () => {
+        child.addEventListener("mouseup", () => {
             RipplesEvent.end(child);
         });
-        this.addEventListener("mouseleave", () => {
+        child.addEventListener("mouseleave", () => {
             RipplesEvent.end(child);
         });
         // 이벤트 등록 - 터치
         let isTouch = false;
         let touchTimeout = null;
         let touchStartEvent = null;
-        this.addEventListener("touchstart", (event) => {
+        child.addEventListener("touchstart", (event) => {
             isTouch = true;
             touchStartEvent = event;
             touchStart(event, RipplesEvent.option["touchDelay"]);
         }, {passive: true});
-        this.addEventListener("touchend", () => {
+        child.addEventListener("touchend", () => {
             RipplesEvent.end(child);
             if (touchStartEvent != null) {
                 touchStart(touchStartEvent, 0);
             }
         }, {passive: true});
-        this.addEventListener("touchcancel", () => {
+        child.addEventListener("touchcancel", () => {
             touchCancel();
         }, {passive: true});
-        this.addEventListener("touchmove", () => {
+        child.addEventListener("touchmove", () => {
             touchCancel();
         }, {passive: true});
         function touchCancel() {
