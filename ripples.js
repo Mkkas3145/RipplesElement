@@ -119,7 +119,7 @@ class LightHoverEvent {
         "fadeInDuration": 0.2,      // 호버 효과가 나타나는 시간
         "fadeOutDuration": 0.2,     // 호버 효과가 끝난 뒤, 사라지는 시간
         "color": "#000000",         // 호버 효과 색상
-        "opacity": 0.5,             // 호버 효과 불투명도
+        "opacity": 0.2,             // 호버 효과 불투명도
         "scale": 1                  // 호버 효과 크기
     }
 
@@ -184,9 +184,8 @@ class LightHoverEvent {
 
             // 호버 효과 나타나기
             window.requestAnimationFrame(() => {
-                window.requestAnimationFrame(() => {
-                    lightHover.style.opacity = 1;
-                });
+                lightHover.offsetHeight; // 강제 리플로우
+                lightHover.style.opacity = 1;
             });
         } else {
             let effect = wrap[0].children[0];
