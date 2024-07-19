@@ -74,10 +74,9 @@ class RipplesEvent {
 
         // 리플 효과 시작
         effect.setAttribute("start_time", new Date().getTime());
-        window.requestAnimationFrame(() => {
-            ripples.style.opacity = 1;
-            effect.style.transform = ("scale(" + this.option["upperScale"] + ")");
-        });
+        ripples.offsetHeight; // 강제 리플로우
+        ripples.style.opacity = 1;
+        effect.style.transform = ("scale(" + this.option["upperScale"] + ")");
     }
 
     static end(element) {
@@ -183,10 +182,8 @@ class LightHoverEvent {
             element.appendChild(lightHover);
 
             // 호버 효과 나타나기
-            window.requestAnimationFrame(() => {
-                lightHover.offsetHeight; // 강제 리플로우
-                lightHover.style.opacity = 1;
-            });
+            lightHover.offsetHeight; // 강제 리플로우
+            lightHover.style.opacity = 1;
         } else {
             let effect = wrap[0].children[0];
             // 최대 사이즈 구하기 (거리 차이를 이용해서)
