@@ -231,13 +231,13 @@ class RipplesElement extends HTMLElement {
         let wrap = this.getElementsByClassName("ripples_element_wrap");
         for (let i = 0; i < wrap.length; i++) {
             wrap[i].remove();
-            i --;
+            i--;
         }
         // 호버 효과 제거
         wrap = this.getElementsByClassName("light_hover_element_wrap");
         for (let i = 0; i < wrap.length; i++) {
             wrap[i].remove();
-            i --;
+            i--;
         }
         let child = this.children[0];
         // 이벤트 등록 - 클릭
