@@ -14,9 +14,28 @@ class RipplesEvent {
         "curve": [0.215, 0.61, 0.355, 1.0]          // 3차원 베지어 곡선
     }
 
+    static getZoom(element) {
+        let zoom = 1;
+        let currentElement = element;
+        while (currentElement) {
+            let style = window.getComputedStyle(currentElement);
+            let zoomValue = style.zoom;
+            if (zoomValue && zoomValue !== 'normal' && zoomValue !== 'auto') {
+                zoom *= parseFloat(zoomValue);
+            }
+            currentElement = currentElement.parentElement;
+        }
+        return zoom;
+    }
+
     static start(element, x, y) {
         let rect = element.getBoundingClientRect();
-        
+        let zoom = this.getZoom(element);
+
+        // 줌 보정
+        x /= zoom;
+        y /= zoom;
+
         // 절대 위치를 상대 위치로 계산합니다.
         x -= rect.left;
         y -= rect.top;
@@ -125,7 +144,12 @@ class LightHoverEvent {
     static start(element, x, y) {
         if (this.option["enable"] == false) { return; }
         let rect = element.getBoundingClientRect();
-        
+        let zoom = RipplesEvent.getZoom(element);
+
+        // 줌 보정
+        x /= zoom;
+        y /= zoom;
+
         // 절대 위치를 상대 위치로 계산합니다.
         x -= rect.left;
         y -= rect.top;
